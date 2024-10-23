@@ -35,24 +35,25 @@ import de.tudarmstadt.ukp.jwktl.api.WiktionaryFormatter;
  */
 public class Example2_AccessParsedWiktionaryData {
 
+	private static final String path = "C:\\Elling\\dict_parsed";
+
 	/** Runs the example.
 	 *  @param args name of the directory of parsed Wiktionary data. */
 	public static void main(String[] args) {
-		if (args.length != 1)
-			throw new IllegalArgumentException("Too few arguments. "
-						+ "Required arguments: <PARSED-WIKTIONARY>");
-		
+		example(path);
+	}
+	private static void example(String dir) {
 		// Create new IWiktionaryEdition for our parsed data.
-		String wktPath = args[0];
+		String wktPath = dir;
 		IWiktionaryEdition wkt = JWKTL.openEdition(new File(wktPath));
 		WiktionaryFormatter formatter = WiktionaryFormatter.instance();
-		
+
 		// Retrieve single article pages.
 		IWiktionaryPage page = wkt.getPageForId(7377);
 		System.out.println(formatter.formatHeader(page));
 		page = wkt.getPageForWord("boat");
 		System.out.println(formatter.formatHeader(page));
-		
+
 		// Retrieve entries.
 		List<? extends IWiktionaryEntry> entries = page.getEntries();
 		for (IWiktionaryEntry entry : entries)
@@ -63,20 +64,20 @@ public class Example2_AccessParsedWiktionaryData {
 		entries = wkt.getEntriesForWord("rom", true);
 		for (IWiktionaryEntry entry : entries)
 			System.out.println(WiktionaryFormatter.instance().formatHeader(entry));
-		
+
 		// Retrieve senses.
 		IWiktionaryEntry entry = entries.get(0);
 		for (IWiktionarySense sense : entry.getSenses())
-			System.out.println(WiktionaryFormatter.instance().formatHeader(sense));	
+			System.out.println(WiktionaryFormatter.instance().formatHeader(sense));
 		IWiktionarySense sense = entry.getSense(1);
 		System.out.println(WiktionaryFormatter.instance().formatHeader(sense));
 		sense = entry.getSense(2);
 		System.out.println(WiktionaryFormatter.instance().formatHeader(sense));
 		sense = entry.getUnassignedSense();
 		System.out.println(WiktionaryFormatter.instance().formatHeader(sense));
-		
+
 		// Close the Wiktionary edition.
-		wkt.close();	
+		wkt.close();
 	}
 
 }

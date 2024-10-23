@@ -35,15 +35,16 @@ import de.tudarmstadt.ukp.jwktl.api.util.Language;
  */
 public class Example3_IterateEntries {
 
+	private static final String path = "C:\\Elling\\dict_parsed";
 	/** Runs the example.
 	 *  @param args name of the directory of parsed Wiktionary data. */
 	public static void main(String[] args) {
-		if (args.length != 1)
-			throw new IllegalArgumentException("Too few arguments. "
-						+ "Required arguments: <PARSED-WIKTIONARY>");
+//		if (args.length != 1)
+//			throw new IllegalArgumentException("Too few arguments. "
+//						+ "Required arguments: <PARSED-WIKTIONARY>");
 				
 		// Create new IWiktionaryEdition for our parsed data.
-		String wktPath = args[0];
+		String wktPath = path;
 		IWiktionaryEdition wkt = JWKTL.openEdition(new File(wktPath));
 		
 		// Iterate over all pages and count the pages, entries, and senses.
