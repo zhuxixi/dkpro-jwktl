@@ -33,35 +33,43 @@ import de.tudarmstadt.ukp.jwktl.api.WiktionaryFormatter;
  */
 public class Example1_ParseWiktionaryDump {
 
+	private static final String filePath="C:\\Elling\\dict\\enwiktionary-latest-pages-articles.xml";
+	private static final String outputDir="C:\\Elling\\dict_parsed";
+	private static final boolean overwrite=true;
+
 	/** Runs the example.
 	 *  @param args name of the dump file, output directory for parsed data, 
 	 *    boolean value that specifies if existing parsed data should 
 	 *    be deleted. */
 	public static void main(String[] args) {
-		if (args.length != 3)
+		parseDict(filePath,outputDir,overwrite);
+	}
+
+	private static void parseDict(String filePath,String outputDir, boolean overwrite){
+		if (filePath == null || outputDir == null)
 			throw new IllegalArgumentException("Too few arguments. "
-						+ "Required arguments: <DUMP_FILE> <OUTPUT_DIRECTORY> "
-						+ "<OVERWRITE_EXISTING_DATA>");
-		
-		File dumpFile = new File(args[0]);	
-		File outputDirectory = new File(args[1]);
-		boolean overwriteExisting = Boolean.valueOf(args[2]);
-		
+					+ "Required arguments: <DUMP_FILE> <OUTPUT_DIRECTORY> "
+					+ "<OVERWRITE_EXISTING_DATA>");
+
+		File dumpFile = new File(filePath);
+		File outputDirectory = new File(outputDir);
+		boolean overwriteExisting = Boolean.valueOf(overwrite);
+
 		// parse dump file
 		JWKTL.parseWiktionaryDump(dumpFile, outputDirectory, overwriteExisting);
-		
+
 		// Create new IWiktionaryEdition for our parsed data.
 		IWiktionaryEdition wkt = JWKTL.openEdition(outputDirectory);
-		
+
 		// Retrieve all IWiktionaryEntries for the word "Wiktionary".
 		List<IWiktionaryEntry> entries = wkt.getEntriesForWord("Wiktionary");
-		
+
 		// Print the information of the parsed entries.
 		for (IWiktionaryEntry entry : entries)
 			System.out.println(WiktionaryFormatter.instance().formatHeader(entry));
-		
+
 		// Close the Wiktionary edition.
-		wkt.close();	
+		wkt.close();
 	}
 
 }
